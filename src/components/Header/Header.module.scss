@@ -1,0 +1,36 @@
+.headerContainer {
+  box-shadow: 0 -1px 48px 0 rgba(2, 185, 185, 0.87);
+  background: rgba(13, 202, 202, 0.35);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2vw
+}
+
+.home {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2rem
+}
+
+.user {
+  background: linear-gradient(90deg, #e933ff, #ffb400, #ff3333, #334dff, #e933ff);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textflow 3s linear infinite;
+}
+@keyframes textflow {
+  from {background-position: 0% center}
+  to {background-position: 200% center}
+}

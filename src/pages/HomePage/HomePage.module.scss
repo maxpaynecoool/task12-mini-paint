@@ -1,0 +1,35 @@
+.homePageContainer {
+  display: flex;
+  align-items: center;
+  padding: 2rem 1.25rem;
+  justify-content: center;
+  gap: 2vw;
+}
+
+.homePageSelector {
+  display: flex;
+  padding: 1.25rem;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 20px;
+  box-shadow: 0px 5px 28px -1px rgba(22, 189, 145, 0.4);
+  --ring-color: #D1D5DB;
+  background-color: #ffffff
+}
+
+.createButton {
+  margin-top: 8px;
+  padding: 1rem 1rem;
+  border-radius: 20px;
+  border-width: 1px;
+  border-color: #9CA3AF;
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: rgba(3, 167, 167, 0.86);
+
+  &:hover {
+    background-color: rgb(20, 150, 117);
+  }
+}

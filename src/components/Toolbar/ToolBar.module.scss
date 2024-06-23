@@ -1,0 +1,28 @@
+.toolBarContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.toolButtonsContainer {
+  margin: 20px 0;
+  display: flex;
+  gap: 20px;
+}
+
+.toolButtonsControlContainer {
+  display: flex;
+  align-items: center;
+}
+
+.toolButton {
+  color: white;
+  background-color: #02bfbf;
+  padding: 10px 20px;
+  border-radius: 20px
+}
+
+.input {
+  width: 64px;
+    height: 36px;
+    margin: 10px;
+}

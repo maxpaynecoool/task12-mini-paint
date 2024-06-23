@@ -1,0 +1,15 @@
+{
+  "singleQuote": true,
+  "semi": true,
+  "jsxSingleQuote": true,
+  "no-restricted-imports": false,
+  "no-console": true,
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "arrowParens": "always",
+  "react-in-jsx-scope": false,
+  "jsxBracketSameLine": false,
+  "printWidth": 80,
+  "bracketSameLine": false,
+  "bracketSpacing": true
+}
