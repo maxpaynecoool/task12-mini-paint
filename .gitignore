@@ -9,8 +9,9 @@ lerna-debug.log*
 
 node_modules
 .yarn
-.dist
+dist
 dist-ssr
+.github
 *.local
 
 # Editor directories and files
