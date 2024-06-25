@@ -40,7 +40,7 @@ const Canvas = () => {
     width: CANVAS_SIZE.width,
   });
 
-  console.log(image)
+  console.log(image);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -91,38 +91,23 @@ const Canvas = () => {
     if (!canvas) {
       return;
     }
-    const dataURL = canvas.toDataURL('image/png')
+    const dataURL = canvas.toDataURL('image/png');
     setImage(dataURL);
   };
 
   const uploadImg = () => {
+    const id = uuidv4();
     try {
-      set(ref(db, `images/${uuidv4()}/`), {
+      set(ref(db, `images/${id}/`), {
         email,
         imagesrc: image,
-        id: uuidv4(),
+        id: id,
       });
       toast.success('Image uploaded successfully!');
     } catch {
-      toast.error('Something went wrong!')
+      toast.error('Something went wrong!');
     }
-
   };
-
-  // const deleteImg = () => {
-  //   const imageId = getImageId(); // Define a function or method to get the specific image ID
-  //   if (!imageId) return;
-  //
-  //   const imageRef = ref(db, `images/${imageId}`);
-  //   remove(imageRef)
-  //     .then(() => {
-  //       console.log("Image deleted successfully");
-  //       // Optionally navigate to another page or update your UI
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error deleting image: ", error);
-  //     });
-  // };
 
   return (
     <div className={cl.canvasContainer}>

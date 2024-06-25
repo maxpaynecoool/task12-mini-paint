@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useLayoutEffect } from 'react';
 import cl from './ImageList.module.scss';
 import { ImageItem } from '../ImageItem/ImageItem.tsx';
 import {
@@ -17,8 +17,6 @@ export const ImageList = ({ filter }: ImageListProps) => {
   const { images, loading } = useAppSelector((state) => state.images);
   const dispatch = useAppDispatch();
 
-  console.log(images)
-
   useEffect(() => {
     dispatch(fetchImages());
   }, [dispatch]);
@@ -36,6 +34,7 @@ export const ImageList = ({ filter }: ImageListProps) => {
                     key={uuidv4()}
                     imageID={item.imagesrc}
                     author={item.email}
+                    id={item.id}
                   />
                 ),
             )
@@ -44,6 +43,7 @@ export const ImageList = ({ filter }: ImageListProps) => {
                 key={uuidv4()}
                 imageID={item.imagesrc}
                 author={item.email}
+                id={item.id}
               />
             )))}
     </div>

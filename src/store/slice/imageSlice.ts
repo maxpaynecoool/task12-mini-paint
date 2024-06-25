@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ref, get } from 'firebase/database';
+import { ref, get, remove } from 'firebase/database';
 import { db } from '../../apiFirebase/firebase.ts';
 
 interface ImageInfo {
   email: string;
+  id: string;
   imagesrc: string;
 }
 
@@ -20,10 +21,18 @@ const initialState: ImagesState = {
 };
 
 export const fetchImages = createAsyncThunk('images/fetchImages', async () => {
-  const snapshot = await get(ref(db, `images`));
+  const snapshot = await get(ref(db, 'images'));
   const images: ImageInfo[] = Object.values(snapshot.val());
   return images;
 });
+
+export const deleteImage = createAsyncThunk(
+  'images/deleteImage',
+  async (id: string) => {
+    await remove(ref(db, `images/${id}`));
+    return id;
+  },
+);
 
 export const imagesSlice = createSlice({
   name: 'images',
@@ -42,6 +51,11 @@ export const imagesSlice = createSlice({
       state.loading = false;
       state.images = [];
       state.error = action.error;
+    });
+    builder.addCase(deleteImage.fulfilled, (state, action) => {
+      state.images = state.images.filter(
+        (image) => image.id !== action.payload,
+      );
     });
   },
 });
