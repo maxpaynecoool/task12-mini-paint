@@ -11,8 +11,8 @@ export const PaintPage = () => {
     <>
       <Header email={email} />
       <div className={cl.paintContainer}>
-        <Canvas />
         <ToolBar />
+        <Canvas />
       </div>
     </>
   );

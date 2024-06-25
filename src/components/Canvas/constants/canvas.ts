@@ -28,6 +28,7 @@ interface ITools {
       color: string,
     ) => void;
     icon: React.ComponentType<SvgIconProps>;
+    tooltip: string;
   };
 }
 
@@ -37,8 +38,8 @@ interface ICanvasSize {
 }
 
 export const CANVAS_SIZE: ICanvasSize = {
-  width: 800,
-  height: 600,
+  width: 500,
+  height: 500,
 };
 
 export const TOOLS: ITools = {
@@ -46,25 +47,30 @@ export const TOOLS: ITools = {
     name: 'brush',
     command: brush,
     icon: CreateIcon,
+    tooltip: 'Brush',
   },
   line: {
     name: 'line',
     command: drawLine,
     icon: HorizontalRuleIcon,
+    tooltip: 'Line',
   },
   rectangle: {
     name: 'rectangle',
     command: drawRect,
     icon: CropSquareIcon,
+    tooltip: 'Rectangle',
   },
   circle: {
     name: 'circle',
     command: drawCircle,
     icon: RadioButtonUncheckedIcon,
+    tooltip: 'Circle',
   },
   eraser: {
     name: 'eraser',
     command: eraser,
     icon: AutoFixNormalIcon,
+    tooltip: 'Eraser',
   },
 };

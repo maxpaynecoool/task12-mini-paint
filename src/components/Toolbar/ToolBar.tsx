@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import {
   Box,
   FormControl,
@@ -18,18 +18,13 @@ import {
 import { TOOLS } from '../Canvas/constants/canvas.ts';
 import { lineThicknessSelect } from '../Canvas/constants/lineThickness.ts';
 import cl from './ToolBar.module.scss';
+import { Button, Tooltip } from 'antd';
+import { ClearOutlined, SaveOutlined } from '@ant-design/icons';
 
-export const ToolBar: FC = memo(() => {
+export const ToolBar = memo(() => {
   const dispatch = useTypedDispatch();
   const { tool, color, fillColor, lineThickness } = useTypedSelector(
     (state) => state.tool,
-  );
-
-  const setToolIconColor = useMemo(
-    () => (selectedTool: string) => {
-      return tool === selectedTool ? 'primary' : 'info';
-    },
-    [tool],
   );
 
   const setFillColor = useCallback(
@@ -47,16 +42,20 @@ export const ToolBar: FC = memo(() => {
     <div className={cl.toolBarContainer}>
       <div className={cl.toolButtonsContainer}>
         {Object.values(TOOLS).map((item) => {
-          const { name, icon: Icon } = item;
+          const { name, icon: Icon, tooltip } = item;
           return (
-            <button
-              className={cl.toolButton}
-              key={name}
-              onClick={() => dispatch(changeTool(name))}
-              color={setToolIconColor(name)}
-            >
-              <Icon />
-            </button>
+            <Tooltip key={name} placement='top' title={tooltip}>
+              <Button
+                type='primary'
+                className={`${cl.toolButton} ${
+                  tool === name ? cl.selectedToolButton : ''
+                }`}
+                onClick={() => dispatch(changeTool(name))}
+                style={{ fontSize: '1.25rem' }}
+              >
+                <Icon />
+              </Button>
+            </Tooltip>
           );
         })}
       </div>
@@ -64,12 +63,14 @@ export const ToolBar: FC = memo(() => {
         <Box>Fill:</Box>
         <Checkbox checked={fillColor} onChange={setFillColor} />
         <Box>Color:</Box>
-        <input
-          className={cl.input}
-          value={color}
-          onChange={setToolColor}
-          type='color'
-        />
+        <Tooltip placement='top' title='Choose a color'>
+          <input
+            className={cl.input}
+            value={color}
+            onChange={setToolColor}
+            type='color'
+          />
+        </Tooltip>
         <Box>Line thickness:</Box>
         <Box sx={{ minWidth: 100 }}>
           <FormControl fullWidth size='small'>

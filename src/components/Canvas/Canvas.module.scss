@@ -5,20 +5,20 @@
 }
 
 .canvasBody {
-  box-shadow: 0 -1px 48px 0 rgba(2, 185, 185, 0.43);
+  box-shadow: 0 -1px 48px 0 rgb(126, 176, 245);
   background-color: white;
+  height: 100%;
+  aspect-ratio: 1;
 }
 
 .topButtons {
   display: flex;
-  justify-content: flex-end;
-  padding-bottom: 10px;
-  gap: 20px;
+  justify-content: space-around;
+  padding-top: 10px;
 }
 
 .toolButton {
   color: white;
-  background-color: #02bfbf;
-  padding: 10px 20px;
+  padding: 20px 5vw;
   border-radius: 20px
 }

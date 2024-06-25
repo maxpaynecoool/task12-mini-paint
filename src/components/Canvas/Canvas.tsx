@@ -14,6 +14,9 @@ import { useAppSelector } from '../../store/hooks/useReduxHooks.ts';
 import { ref, set } from 'firebase/database';
 import { db } from '../../apiFirebase/firebase.ts';
 import { v4 as uuidv4 } from 'uuid';
+import { ClearOutlined, SaveOutlined } from '@ant-design/icons';
+import { Button, Tooltip } from 'antd';
+import toast from 'react-hot-toast';
 
 interface ISnapshot {
   data: Uint8ClampedArray;
@@ -36,6 +39,8 @@ const Canvas = () => {
     height: CANVAS_SIZE.height,
     width: CANVAS_SIZE.width,
   });
+
+  console.log(image)
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -86,27 +91,41 @@ const Canvas = () => {
     if (!canvas) {
       return;
     }
-    setImage(canvas.toDataURL('image/png'));
+    const dataURL = canvas.toDataURL('image/png')
+    setImage(dataURL);
   };
 
   const uploadImg = () => {
-    set(ref(db, `images/${uuidv4()}/`), {
-      email,
-      imagesrc: image,
-    });
-    navigate('/home');
+    try {
+      set(ref(db, `images/${uuidv4()}/`), {
+        email,
+        imagesrc: image,
+        id: uuidv4(),
+      });
+      toast.success('Image uploaded successfully!');
+    } catch {
+      toast.error('Something went wrong!')
+    }
+
   };
+
+  // const deleteImg = () => {
+  //   const imageId = getImageId(); // Define a function or method to get the specific image ID
+  //   if (!imageId) return;
+  //
+  //   const imageRef = ref(db, `images/${imageId}`);
+  //   remove(imageRef)
+  //     .then(() => {
+  //       console.log("Image deleted successfully");
+  //       // Optionally navigate to another page or update your UI
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error deleting image: ", error);
+  //     });
+  // };
 
   return (
     <div className={cl.canvasContainer}>
-      <div className={cl.topButtons}>
-        <button className={cl.toolButton} onClick={clear}>
-          <DeleteForeverIcon />
-        </button>
-        <button className={cl.toolButton} onClick={uploadImg}>
-          <BookmarkIcon />
-        </button>
-      </div>
       <canvas
         className={cl.canvasBody}
         width={CANVAS_SIZE.width}
@@ -116,6 +135,18 @@ const Canvas = () => {
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
       />
+      <div className={cl.topButtons}>
+        <Tooltip placement='bottom' title='Clear'>
+          <Button type='primary' className={cl.toolButton} onClick={clear}>
+            <ClearOutlined style={{ fontSize: '1.25rem' }} />
+          </Button>
+        </Tooltip>
+        <Tooltip placement='bottom' title='Save'>
+          <Button type='primary' className={cl.toolButton} onClick={uploadImg}>
+            <SaveOutlined style={{ fontSize: '1.25rem' }} />
+          </Button>
+        </Tooltip>
+      </div>
     </div>
   );
 };

@@ -36,7 +36,7 @@ VITE_apiKey="your_api_key"
 VITE_authDomain="..."
 VITE_projectId="..."
 VITE_storageBucket="..."
-env.VITE_messagingSenderId="..."
+VITE_messagingSenderId="..."
 VITE_appId="..."
 VITE_measurementId="..."
 ```

@@ -10,8 +10,7 @@ import { ImageList } from '../../components/ImageList/ImageList.tsx';
 export const HomePage = () => {
   const { email } = useAppSelector((state) => state.user);
   const [usersEmails, setUserEmail] = useState<string[]>([]);
-  const [filter, setFilter] = useState<string>('');
-  const navigate = useNavigate();
+  const [filter, setFilter] = useState<string | null>('');
 
   const fetchAllUsers = () => {
     onValue(refDB(db, `users/`), (snapshot) => {
@@ -28,40 +27,12 @@ export const HomePage = () => {
 
   useEffect(() => {
     fetchAllUsers();
+    setFilter(email);
   }, []);
-
-  const userFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
-    setFilter(value);
-  };
-
-  const navigateHandler = () => {
-    navigate('/paint');
-  };
 
   return (
     <>
       <Header email={email} />
-      <div className={cl.homePageContainer}>
-        <select
-          value={filter}
-          onChange={userFilter}
-          className={cl.homePageSelector}
-        >
-          <option disabled>Choose account</option>
-          <option value={''}>all</option>
-          {usersEmails &&
-            usersEmails.map((user: string) => (
-              <option key={user}>{user}</option>
-            ))}
-        </select>
-        <div className='ml-3'>
-          <button className={cl.createButton} onClick={navigateHandler}>
-            {' '}
-            Create new
-          </button>
-        </div>
-      </div>
       <ImageList filter={filter} />
     </>
   );

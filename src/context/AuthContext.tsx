@@ -45,7 +45,7 @@ export const AuthContextProvider = ({
 
   useEffect(() => {
     const subscriber = auth.onAuthStateChanged((user) => {
-      console.log(user)
+      // console.log(user)
       if (user) {
         dispatch(setUserEmail(user.email));
       } else {
@@ -103,7 +103,7 @@ export const AuthContextProvider = ({
 
   return (
     <AuthContext.Provider value={{ signIn, signUp, logOut }}>
-      <Toaster position='top-left' />
+      <Toaster position='top-center' />
       {children}
     </AuthContext.Provider>
   );

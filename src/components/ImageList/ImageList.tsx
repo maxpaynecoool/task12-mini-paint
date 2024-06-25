@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import cl from './ImageList.module.scss';
 import { ImageItem } from '../ImageItem/ImageItem.tsx';
 import {
@@ -10,12 +10,14 @@ import { fetchImages } from '../../store/slice/imageSlice.ts';
 import { v4 as uuidv4 } from 'uuid';
 
 interface ImageListProps {
-  filter: string;
+  filter: string | null;
 }
 
 export const ImageList = ({ filter }: ImageListProps) => {
   const { images, loading } = useAppSelector((state) => state.images);
   const dispatch = useAppDispatch();
+
+  console.log(images)
 
   useEffect(() => {
     dispatch(fetchImages());
