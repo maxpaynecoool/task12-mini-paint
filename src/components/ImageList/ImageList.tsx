@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import cl from './ImageList.module.scss';
 import { ImageItem } from '../ImageItem/ImageItem.tsx';
 import {
@@ -10,34 +10,43 @@ import { fetchImages } from '../../store/slice/imageSlice.ts';
 import { v4 as uuidv4 } from 'uuid';
 
 interface ImageListProps {
-  filter: string | null;
+  email: string | null;
 }
 
-export const ImageList = ({ filter }: ImageListProps) => {
+export const ImageList = ({ email }: ImageListProps) => {
   const { images, loading } = useAppSelector((state) => state.images);
   const dispatch = useAppDispatch();
+  const [filter, setFilter] = useState<string | null>('');
 
   useEffect(() => {
     dispatch(fetchImages());
+    setFilter(email);
   }, [dispatch]);
 
-  return loading ? (
-    <Loader />
-  ) : (
+  const filteredImages = images?.filter((item) => filter === item.email) || [];
+
+  return (
     <div className={cl.imageListContainer}>
-      {images &&
-        filter &&
-        images.map(
-          (item) =>
-            filter === item.email && (
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          {filteredImages.length === 0 ? (
+            <p style={{ fontSize: '1.5rem' }}>
+              No projects available! Create your first one :)
+            </p>
+          ) : (
+            filteredImages.map((item) => (
               <ImageItem
                 key={uuidv4()}
                 imageID={item.imagesrc}
                 author={item.email}
                 id={item.id}
               />
-            ),
-        )}
+            ))
+          )}
+        </>
+      )}
     </div>
   );
 };

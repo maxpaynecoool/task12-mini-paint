@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { RoutesDomains } from '../../routes/RoutesDomains.ts';
 import cl from './Header.module.scss';
-import { AuthContext } from '../../context/AuthContext.tsx';
+import { AuthContext } from '../../contexts/AuthContext.tsx';
 import { LogoutOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import ColorLensIcon from '@mui/icons-material/ColorLens';

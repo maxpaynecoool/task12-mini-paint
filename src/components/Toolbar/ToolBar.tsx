@@ -15,11 +15,9 @@ import {
   changeTool,
   changeToolColor,
 } from '../../store/slice/toolSlice.ts';
-import { TOOLS } from '../Canvas/constants/canvas.ts';
-import { lineThicknessSelect } from '../Canvas/constants/lineThickness.ts';
+import { TOOLS, lineThicknessSelect } from '../Canvas/constants.ts';
 import cl from './ToolBar.module.scss';
 import { Button, Tooltip } from 'antd';
-import { ClearOutlined, SaveOutlined } from '@ant-design/icons';
 
 export const ToolBar = memo(() => {
   const dispatch = useTypedDispatch();

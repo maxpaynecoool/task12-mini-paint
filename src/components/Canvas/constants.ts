@@ -1,41 +1,14 @@
+import { brush, drawCircle, drawLine, drawRect, eraser } from './functions.ts';
 import CreateIcon from '@mui/icons-material/Create';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import AutoFixNormalIcon from '@mui/icons-material/AutoFixNormal';
-import {
-  brush,
-  drawLine,
-  eraser,
-  drawRect,
-  drawCircle,
-} from '../functions.ts';
-import { SvgIconProps } from '@mui/material/SvgIcon';
+import { ICanvasSize, ITools } from './types.ts';
 
-type TPrevPosition = {
-  x: number;
-  y: number;
-};
-
-interface ITools {
-  [key: string]: {
-    name: string;
-    command: (
-      e: React.MouseEvent<HTMLCanvasElement>,
-      ctx: CanvasRenderingContext2D | null,
-      prevPosition: TPrevPosition,
-      fillColor: boolean,
-      color: string,
-    ) => void;
-    icon: React.ComponentType<SvgIconProps>;
-    tooltip: string;
-  };
-}
-
-interface ICanvasSize {
-  width: number;
-  height: number;
-}
+export const lineThicknessSelect: Array<number> = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+];
 
 export const CANVAS_SIZE: ICanvasSize = {
   width: 500,

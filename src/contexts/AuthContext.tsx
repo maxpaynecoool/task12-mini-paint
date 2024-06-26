@@ -9,8 +9,9 @@ import { auth, db } from '../apiFirebase/firebase.ts';
 import { ref, set } from 'firebase/database';
 import { Auth } from 'firebase/auth';
 import { useAppDispatch } from '../store/hooks/useReduxHooks.ts';
-import { setUserEmail } from '../store/slice/userSlice.ts';
+import { setUnAuth, setUser } from '../store/slice/userSlice.ts';
 import toast, { Toaster } from 'react-hot-toast';
+import { useUser } from '../store/hooks/useUser.ts';
 
 interface IAuthContext {
   signIn: (auth: Auth, email: string, password: string) => void;
@@ -38,56 +39,18 @@ export const AuthContextProvider = ({
   children,
 }: IAuthContextProviderProps) => {
   const dispatch = useAppDispatch();
-
-  // const {user, loading} = useUser()
-  //
   const navigate = useNavigate();
-
+  const { isAuth, isLoading} = useUser();
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
-    const subscriber = auth.onAuthStateChanged((user) => {
-      // console.log(user)
-      if (user) {
-        dispatch(setUserEmail(user.email));
-      } else {
-        dispatch(setUserEmail(null));
+    if (!isLoading) {
+      setInitializing(false);
+      if (!isAuth) {
         navigate('/signin');
       }
-      if (initializing) {
-        setInitializing(false);
-      }
-    });
-    return subscriber;
-  }, [initializing, dispatch]);
-
-  if (initializing) {
-    return null;
-  }
-
-  // useEffect(() => {
-  //   const subscriber = auth.onAuthStateChanged((user) => {
-  //     dispatch(setUser(user))
-  //   });
-  //   return subscriber;
-  // }, [dispatch]);
-  //
-  // useEffect(() => {
-  //
-  //
-  //     if (!user) {
-  //       navigate.replace('/login')
-  //     }
-  //   }
-  //
-  // , [
-  //   user,navigate
-  // ])
-  //
-  // if (loading) {
-  //   return null;
-  // }
-
+    }
+  }, [isLoading, isAuth, navigate]);
 
   const signIn = async (auth: Auth, email: string, password: string) => {
     try {
@@ -95,6 +58,12 @@ export const AuthContextProvider = ({
         auth,
         email,
         password,
+      );
+      dispatch(
+        setUser({
+          uid: userCredential.user.uid,
+          email: userCredential.user.email,
+        }),
       );
       toast.success(`${userCredential.user.email}, welcome!`);
       navigate('/home');
@@ -111,6 +80,12 @@ export const AuthContextProvider = ({
         email,
         password,
       );
+      dispatch(
+        setUser({
+          uid: userCredential.user.uid,
+          email: userCredential.user.email,
+        }),
+      );
       toast.success(`${userCredential.user.email}, welcome!`);
       set(ref(db, `users/${userCredential.user.uid}/`), {
         email: userCredential.user.email,
@@ -124,8 +99,13 @@ export const AuthContextProvider = ({
 
   const logOut = () => {
     signOut(auth);
+    dispatch(setUnAuth());
     navigate('/signin');
   };
+
+  if (initializing) {
+    return null;
+  }
 
   return (
     <AuthContext.Provider value={{ signIn, signUp, logOut }}>

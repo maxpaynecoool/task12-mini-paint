@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import cl from './Canvas.module.scss';
 import { useTypedSelector } from '../../store/hooks/useTypedSelector.ts';
 import { useTypedDispatch } from '../../store/hooks/useTypedDispatch.ts';
-import { CANVAS_SIZE, TOOLS } from './constants/canvas.ts';
+import { CANVAS_SIZE, TOOLS } from './constants.ts';
 import {
   changePrevPosition,
   toolIsDrawing,
@@ -81,7 +81,9 @@ const Canvas = () => {
     saveImg();
   };
 
-  const { email } = useAppSelector((state) => state.user);
+  const { userData } = useAppSelector((state) => state.user);
+
+  console.log(userData!.email)
 
   const saveImg = () => {
     const canvas = canvasRef.current;
@@ -119,7 +121,7 @@ const Canvas = () => {
     const id = uuidv4();
     try {
       set(ref(db, `images/${id}/`), {
-        email,
+        email: userData!.email,
         imagesrc: image,
         id: id,
       });

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext.tsx';
+import { AuthContext } from '../../contexts/AuthContext.tsx';
 import { auth } from '../../apiFirebase/firebase.ts';
 import cl from './SignInUpPage.module.scss';
 

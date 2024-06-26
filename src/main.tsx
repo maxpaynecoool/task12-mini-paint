@@ -4,7 +4,7 @@ import App from './App.tsx';
 import './index.css';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
-import { AuthContextProvider } from './context/AuthContext.tsx';
+import { AuthContextProvider } from './contexts/AuthContext.tsx';
 import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(

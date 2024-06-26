@@ -1,64 +1,42 @@
-// import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-//
-// interface UserState {
-//   user: User | null
-//   loading: boolean
-// }
-//
-// type User = {
-//   id: string
-//   email: string
-// }
-//
-// const initialState: UserState = {
-//   user: null,
-//   loading: true
-// };
-//
-// export const userSlice = createSlice({
-//   name: 'user',
-//   initialState,
-//   reducers: {
-//     setUser(state, action) {
-//       state.user = action.payload;
-//       state.loading = false
-//     }
-//     // setUserUid(state, action: PayloadAction<string | null>) {
-//     //   state.uid = action.payload;
-//     // },
-//     // setUserEmail(state, action: PayloadAction<string | null>) {
-//     //   state.email = action.payload;
-//     // },
-//   },
-// });
-//
-// export default userSlice.reducer;
-// export const { setUser } = userSlice.actions;
+import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../store.ts';
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface UserState {
-  uid: string | null;
+export interface userDataProps {
   email: string | null;
+  uid: string | null;
 }
 
-const initialState: UserState = {
-  uid: null,
-  email: null,
+export interface userStateProps {
+  userData: userDataProps | null;
+  pending: boolean;
+  isAuth: boolean;
+}
+
+const initialState: userStateProps = {
+  userData: null,
+  pending: true,
+  isAuth: false,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserUid(state, action: PayloadAction<string | null>) {
-      state.uid = action.payload;
+    setUser: (state, { payload }) => {
+      state.userData = payload;
+      state.isAuth = true;
+      state.pending = false;
     },
-    setUserEmail(state, action: PayloadAction<string | null>) {
-      state.email = action.payload;
+    setUnAuth: (state) => {
+      state.userData = null;
+      state.isAuth = false;
+      state.pending = false;
     },
   },
 });
 
+export const { setUser, setUnAuth } = userSlice.actions;
+
+export const selectUser = (state: RootState) => state.user;
+
 export default userSlice.reducer;
-export const { setUserEmail, setUserUid } = userSlice.actions;
