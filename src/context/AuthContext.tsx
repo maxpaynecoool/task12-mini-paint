@@ -39,6 +39,8 @@ export const AuthContextProvider = ({
 }: IAuthContextProviderProps) => {
   const dispatch = useAppDispatch();
 
+  // const {user, loading} = useUser()
+  //
   const navigate = useNavigate();
 
   const [initializing, setInitializing] = useState(true);
@@ -62,6 +64,30 @@ export const AuthContextProvider = ({
   if (initializing) {
     return null;
   }
+
+  // useEffect(() => {
+  //   const subscriber = auth.onAuthStateChanged((user) => {
+  //     dispatch(setUser(user))
+  //   });
+  //   return subscriber;
+  // }, [dispatch]);
+  //
+  // useEffect(() => {
+  //
+  //
+  //     if (!user) {
+  //       navigate.replace('/login')
+  //     }
+  //   }
+  //
+  // , [
+  //   user,navigate
+  // ])
+  //
+  // if (loading) {
+  //   return null;
+  // }
+
 
   const signIn = async (auth: Auth, email: string, password: string) => {
     try {

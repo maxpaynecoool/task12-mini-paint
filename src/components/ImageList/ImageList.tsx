@@ -26,26 +26,18 @@ export const ImageList = ({ filter }: ImageListProps) => {
   ) : (
     <div className={cl.imageListContainer}>
       {images &&
-        (filter
-          ? images.map(
-              (item) =>
-                filter === item.email && (
-                  <ImageItem
-                    key={uuidv4()}
-                    imageID={item.imagesrc}
-                    author={item.email}
-                    id={item.id}
-                  />
-                ),
-            )
-          : images.map((item) => (
+        filter &&
+        images.map(
+          (item) =>
+            filter === item.email && (
               <ImageItem
                 key={uuidv4()}
                 imageID={item.imagesrc}
                 author={item.email}
                 id={item.id}
               />
-            )))}
+            ),
+        )}
     </div>
   );
 };

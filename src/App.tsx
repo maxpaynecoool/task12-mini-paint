@@ -7,7 +7,7 @@ import React from 'react';
 
 function App() {
   return (
-    <Routes>
+    <Routes >
       <Route path={RoutesDomains.SIGN_IN_MAIN} element={<SignInUpPage />} />
       <Route path={RoutesDomains.SIGN_IN} element={<SignInUpPage />} />
       <Route path={RoutesDomains.SIGN_UP} element={<SignInUpPage />} />
