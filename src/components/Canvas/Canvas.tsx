@@ -38,8 +38,6 @@ const Canvas = () => {
     width: CANVAS_SIZE.width,
   });
 
-  console.log(image);
-
   useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
@@ -101,6 +99,7 @@ const Canvas = () => {
       return true;
     }
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    console.log(imageData);
     for (let i = 0; i < imageData.data.length; i += 4) {
       if (imageData.data[i + 3] !== 0) {
         return false;
