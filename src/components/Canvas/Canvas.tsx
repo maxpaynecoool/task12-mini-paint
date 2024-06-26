@@ -103,7 +103,6 @@ const Canvas = () => {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     for (let i = 0; i < imageData.data.length; i += 4) {
       if (imageData.data[i + 3] !== 0) {
-        // Alpha channel is not transparent
         return false;
       }
     }
