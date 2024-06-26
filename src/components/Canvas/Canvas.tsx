@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ClearOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import toast from 'react-hot-toast';
+import { useLocation } from 'react-router-dom'; // Add this import
 
 interface ISnapshot {
   data: Uint8ClampedArray;
@@ -24,7 +25,9 @@ interface ISnapshot {
 }
 
 const Canvas = () => {
-  const [image, setImage] = useState<string>('');
+  const location = useLocation();
+  const { imageID } = location.state || {};
+  const [image, setImage] = useState<string>(imageID || '');
   const [isCanvasModified, setIsCanvasModified] = useState<boolean>(false);
   const dispatch = useTypedDispatch();
   const { tool, color, lineThickness, isDrawing, fillColor, prevPosition } =
@@ -45,8 +48,16 @@ const Canvas = () => {
         willReadFrequently: true,
       });
       contextRef.current = context;
+
+      if (imageID) {
+        const img = new Image();
+        img.src = imageID;
+        img.onload = () => {
+          context?.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+      }
     }
-  }, []);
+  }, [imageID]);
 
   const clear = () => {
     const ctx = contextRef.current;
@@ -83,8 +94,6 @@ const Canvas = () => {
 
   const { userData } = useAppSelector((state) => state.user);
 
-  console.log(userData!.email)
-
   const saveImg = () => {
     const canvas = canvasRef.current;
     if (!canvas) {
@@ -115,10 +124,15 @@ const Canvas = () => {
       return;
     }
     if (isCanvasEmpty()) {
-      toast.error('Nothing to save! Draw something first!');
+      toast.error('Nothing to save!');
       return;
     }
-    const id = uuidv4();
+    let id;
+    if (imageID) {
+      id = location.state.id;
+    } else {
+      id = uuidv4();
+    }
     try {
       set(ref(db, `images/${id}/`), {
         email: userData!.email,

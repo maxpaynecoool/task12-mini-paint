@@ -4,6 +4,7 @@ import { Card, Modal, Button, Flex, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch } from '../../store/hooks/useReduxHooks.ts';
 import { deleteImage } from '../../store/slice/imageSlice.ts';
+import { useNavigate } from 'react-router-dom'; // Add this import
 
 interface ImageItemProps {
   author: string;
@@ -14,6 +15,7 @@ interface ImageItemProps {
 export const ImageItem = ({ author, imageID, id }: ImageItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const showModal = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
@@ -30,11 +32,22 @@ export const ImageItem = ({ author, imageID, id }: ImageItemProps) => {
     dispatch(deleteImage(id));
   };
 
+  const openCanvasWithImage = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    e.stopPropagation();
+    navigate(`/paint/${id}`, { state: { imageID, author, id } });
+  };
+
   const { Meta } = Card;
 
   return (
     <div className={cl.imageItem}>
-      <Card hoverable cover={<img alt='example' src={imageID} />}>
+      <Card
+        hoverable
+        cover={<img alt='example' src={imageID} />}
+        onClick={openCanvasWithImage}
+      >
         <Meta title={author} description={id} />
         <Flex
           gap='middle'

@@ -13,6 +13,7 @@ function App() {
       <Route path={RoutesDomains.SIGN_UP} element={<SignInUpPage />} />
       <Route path={RoutesDomains.HOME} element={<HomePage />} />
       <Route path={RoutesDomains.PAINT} element={<PaintPage />} />
+      <Route path={RoutesDomains.PAINTID} element={<PaintPage />} />
       <Route
         path={RoutesDomains.NOT_FOUND}
         element={<Navigate to={RoutesDomains.HOME} replace />}
