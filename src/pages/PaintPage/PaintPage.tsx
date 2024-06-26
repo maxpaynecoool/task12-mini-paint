@@ -5,11 +5,11 @@ import { Header } from '../../components/Header/Header.tsx';
 import { useAppSelector } from '../../store/hooks/useReduxHooks.ts';
 
 export const PaintPage = () => {
-  const { email } = useAppSelector((state) => state.user);
+  const { userData } = useAppSelector((state) => state.user);
 
   return (
     <>
-      <Header email={email} />
+      <Header email={userData!.email} />
       <div className={cl.paintContainer}>
         <ToolBar />
         <Canvas />
