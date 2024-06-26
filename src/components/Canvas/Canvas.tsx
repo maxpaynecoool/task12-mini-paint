@@ -25,6 +25,7 @@ interface ISnapshot {
 
 const Canvas = () => {
   const [image, setImage] = useState<string>('');
+  const [isCanvasModified, setIsCanvasModified] = useState<boolean>(false);
   const dispatch = useTypedDispatch();
   const { tool, color, lineThickness, isDrawing, fillColor, prevPosition } =
     useTypedSelector((state) => state.tool);
@@ -47,11 +48,12 @@ const Canvas = () => {
       });
       contextRef.current = context;
     }
-  });
+  }, []);
 
   const clear = () => {
     const ctx = contextRef.current;
     ctx!.clearRect(0, 0, ctx!.canvas.width, ctx!.canvas.height);
+    setIsCanvasModified(true);
   };
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -65,14 +67,15 @@ const Canvas = () => {
     ctx!.fillStyle = color;
     setSnapshot(ctx!.getImageData(0, 0, ctx!.canvas.width, ctx!.canvas.height));
     dispatch(changePrevPosition({ x, y }));
+    setIsCanvasModified(true);
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const ctx = contextRef.current;
     if (!isDrawing) return;
     ctx!.putImageData(snapshot, 0, 0);
-
     TOOLS[tool].command(e, ctx, prevPosition, fillColor, color);
+    setIsCanvasModified(true);
   };
 
   const onMouseUp = () => {
@@ -91,7 +94,31 @@ const Canvas = () => {
     setImage(dataURL);
   };
 
+  const isCanvasEmpty = () => {
+    const canvas = canvasRef.current;
+    const ctx = contextRef.current;
+    if (!canvas || !ctx) {
+      return true;
+    }
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+      if (imageData.data[i + 3] !== 0) {
+        // Alpha channel is not transparent
+        return false;
+      }
+    }
+    return true;
+  };
+
   const uploadImg = () => {
+    if (!isCanvasModified) {
+      toast.error('No changes to save!');
+      return;
+    }
+    if (isCanvasEmpty()) {
+      toast.error('Nothing to save! Draw something first!');
+      return;
+    }
     const id = uuidv4();
     try {
       set(ref(db, `images/${id}/`), {
@@ -100,6 +127,7 @@ const Canvas = () => {
         id: id,
       });
       toast.success('Image uploaded successfully!');
+      setIsCanvasModified(false);
     } catch {
       toast.error('Something went wrong!');
     }
