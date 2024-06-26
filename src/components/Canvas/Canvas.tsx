@@ -7,9 +7,6 @@ import {
   changePrevPosition,
   toolIsDrawing,
 } from '../../store/slice/toolSlice.ts';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../store/hooks/useReduxHooks.ts';
 import { ref, set } from 'firebase/database';
 import { db } from '../../apiFirebase/firebase.ts';
@@ -83,7 +80,6 @@ const Canvas = () => {
     saveImg();
   };
 
-  const navigate = useNavigate();
   const { email } = useAppSelector((state) => state.user);
 
   const saveImg = () => {

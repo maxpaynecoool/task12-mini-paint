@@ -49,7 +49,6 @@ export const ImageItem = ({ author, imageID, id }: ImageItemProps) => {
           </Tooltip>
           <Tooltip placement='bottom' title='Delete image'>
             <Button
-              className='deleteImage'
               type='primary'
               value='default'
               icon={<DeleteOutlined />}
