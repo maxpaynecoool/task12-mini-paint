@@ -4,7 +4,7 @@ import { Card, Modal, Button, Flex, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useAppDispatch } from '../../store/hooks/useReduxHooks.ts';
 import { deleteImage } from '../../store/slice/imageSlice.ts';
-import { useNavigate } from 'react-router-dom'; // Add this import
+import { useNavigate } from 'react-router-dom';
 
 interface ImageItemProps {
   author: string;

@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ClearOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import toast from 'react-hot-toast';
-import { useLocation } from 'react-router-dom'; // Add this import
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface ISnapshot {
   data: Uint8ClampedArray;
@@ -26,7 +26,8 @@ interface ISnapshot {
 
 const Canvas = () => {
   const location = useLocation();
-  const { imageID } = location.state || {};
+  const navigate = useNavigate();
+  const { imageID, id: existingId } = location.state || {};
   const [image, setImage] = useState<string>(imageID || '');
   const [isCanvasModified, setIsCanvasModified] = useState<boolean>(false);
   const dispatch = useTypedDispatch();
@@ -127,12 +128,7 @@ const Canvas = () => {
       toast.error('Nothing to save!');
       return;
     }
-    let id;
-    if (imageID) {
-      id = location.state.id;
-    } else {
-      id = uuidv4();
-    }
+    const id = existingId || uuidv4();
     try {
       set(ref(db, `images/${id}/`), {
         email: userData!.email,
@@ -141,6 +137,7 @@ const Canvas = () => {
       });
       toast.success('Image uploaded successfully!');
       setIsCanvasModified(false);
+      navigate(`/paint/${id}`, { state: { imageID: image, id } });
     } catch {
       toast.error('Something went wrong!');
     }

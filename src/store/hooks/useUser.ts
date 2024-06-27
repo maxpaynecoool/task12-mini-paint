@@ -29,7 +29,5 @@ export const useUser = () => {
   const isAuth = authData.isAuth;
   const isLoading = authData.pending;
 
-  console.log(userEmail);
-
   return { userId, isAuth, isLoading, userEmail };
 };
