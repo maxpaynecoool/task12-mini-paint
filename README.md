@@ -51,13 +51,12 @@ VITE_measurementId="..."
 │    ├───apiFirebase
 │    ├───components
 │    │   │───Canvas
-│    │   │   └───constants
 │    │   │───Header
 │    │   │───ImageItem
 │    │   │───ImageList
 │    │   │───Toolbar
 │    │   └───ui
-│    ├───context
+│    ├───contexts
 │    ├───pages
 │    │   │───HomePage
 │    │   │───PaintPage
@@ -79,5 +78,6 @@ VITE_measurementId="..."
 ├── README.md
 ├── tsconfig.json
 ├── tsconfig.node.json
+├── vercel.json
 └── vite.config.js
 ```
