@@ -15,6 +15,7 @@ import { ClearOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { resetLoaded } from '../../store/slice/imageSlice.ts';
 
 interface ISnapshot {
   data: Uint8ClampedArray;
@@ -138,6 +139,7 @@ const Canvas = () => {
       toast.success('Image uploaded successfully!');
       setIsCanvasModified(false);
       navigate(`/paint/${id}`, { state: { imageID: image, id } });
+      dispatch(resetLoaded());
     } catch {
       toast.error('Something went wrong!');
     }

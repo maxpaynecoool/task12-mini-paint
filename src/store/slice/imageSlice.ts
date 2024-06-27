@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { ref, get, remove } from 'firebase/database';
 import { db } from '../../apiFirebase/firebase.ts';
 
@@ -12,12 +12,14 @@ interface ImagesState {
   loading: boolean;
   images: ImageInfo[];
   error: object | null;
+  loaded: boolean;
 }
 
 const initialState: ImagesState = {
   loading: false,
   images: [],
   error: null,
+  loaded: false,
 };
 
 export const fetchImages = createAsyncThunk('images/fetchImages', async () => {
@@ -34,30 +36,43 @@ export const deleteImage = createAsyncThunk(
   },
 );
 
-export const imagesSlice = createSlice({
+const imagesSlice = createSlice({
   name: 'images',
   initialState,
-  reducers: {},
+  reducers: {
+    resetLoaded: (state) => {
+      state.loaded = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchImages.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchImages.fulfilled, (state, action) => {
-      state.loading = false;
-      state.images = action.payload;
-      state.error = null;
-    });
+    builder.addCase(
+      fetchImages.fulfilled,
+      (state, action: PayloadAction<ImageInfo[]>) => {
+        state.loading = false;
+        state.images = action.payload;
+        state.error = null;
+        state.loaded = true;
+      },
+    );
     builder.addCase(fetchImages.rejected, (state, action) => {
       state.loading = false;
       state.images = [];
       state.error = action.error;
     });
-    builder.addCase(deleteImage.fulfilled, (state, action) => {
-      state.images = state.images.filter(
-        (image) => image.id !== action.payload,
-      );
-    });
+    builder.addCase(
+      deleteImage.fulfilled,
+      (state, action: PayloadAction<string>) => {
+        state.images = state.images.filter(
+          (image) => image.id !== action.payload,
+        );
+      },
+    );
   },
 });
+
+export const { resetLoaded } = imagesSlice.actions;
 
 export default imagesSlice.reducer;

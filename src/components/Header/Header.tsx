@@ -14,6 +14,8 @@ type THeaderProps = {
 export const Header = ({ email }: THeaderProps) => {
   const { logOut } = useContext(AuthContext);
 
+
+
   return (
     <header className={cl.headerContainer}>
       <div className={cl.home}>

@@ -8,18 +8,22 @@ import {
 import { Loader } from '../ui/Loader.tsx';
 import { fetchImages } from '../../store/slice/imageSlice.ts';
 import { v4 as uuidv4 } from 'uuid';
+import { useUser } from '../../store/hooks/useUser.ts';
 
 interface ImageListProps {
   email: string | null;
 }
 
 export const ImageList = ({ email }: ImageListProps) => {
-  const { images, loading } = useAppSelector((state) => state.images);
+  const { images, loading, loaded } = useAppSelector((state) => state.images);
   const dispatch = useAppDispatch();
   const [filter, setFilter] = useState<string | null>('');
 
+
   useEffect(() => {
-    dispatch(fetchImages());
+    if (!loaded) {
+      dispatch(fetchImages());
+    }
     setFilter(email);
   }, [dispatch]);
 
@@ -38,7 +42,7 @@ export const ImageList = ({ email }: ImageListProps) => {
           ) : (
             filteredImages.map((item) => (
               <ImageItem
-                key={uuidv4()}
+                key={item.id}
                 imageID={item.imagesrc}
                 author={item.email}
                 id={item.id}
