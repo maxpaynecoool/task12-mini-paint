@@ -22,16 +22,19 @@ const initialState: ImagesState = {
   loaded: false,
 };
 
-export const fetchImages = createAsyncThunk('images/fetchImages', async () => {
-  const snapshot = await get(ref(db, 'images'));
-  const images: ImageInfo[] = Object.values(snapshot.val());
-  return images;
-});
+export const fetchImages = createAsyncThunk(
+  'images/fetchImages',
+  async (userUid: string) => {
+    const snapshot = await get(ref(db, `users/${userUid}/images`));
+    const images: ImageInfo[] = Object.values(snapshot.val());
+    return images;
+  },
+);
 
 export const deleteImage = createAsyncThunk(
   'images/deleteImage',
-  async (id: string) => {
-    await remove(ref(db, `images/${id}`));
+  async ({ userUid, id }: { userUid: string | null; id: string }) => {
+    await remove(ref(db, `users/${userUid}/images/${id}`));
     return id;
   },
 );
@@ -41,6 +44,11 @@ const imagesSlice = createSlice({
   initialState,
   reducers: {
     resetLoaded: (state) => {
+      state.loaded = false;
+    },
+    clearImages(state) {
+      state.images = [];
+      state.loading = false;
       state.loaded = false;
     },
   },
@@ -73,6 +81,6 @@ const imagesSlice = createSlice({
   },
 });
 
-export const { resetLoaded } = imagesSlice.actions;
+export const { resetLoaded, clearImages } = imagesSlice.actions;
 
 export default imagesSlice.reducer;

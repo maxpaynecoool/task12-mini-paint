@@ -5,29 +5,22 @@ import {
   useAppDispatch,
   useAppSelector,
 } from '../../store/hooks/useReduxHooks.ts';
-import { Loader } from '../ui/Loader.tsx';
 import { fetchImages } from '../../store/slice/imageSlice.ts';
-import { v4 as uuidv4 } from 'uuid';
-import { useUser } from '../../store/hooks/useUser.ts';
+import { Loader } from '../Loader/Loader.tsx';
 
-interface ImageListProps {
-  email: string | null;
-}
-
-export const ImageList = ({ email }: ImageListProps) => {
+export const ImageList = () => {
   const { images, loading, loaded } = useAppSelector((state) => state.images);
   const dispatch = useAppDispatch();
-  const [filter, setFilter] = useState<string | null>('');
 
+  const { userData } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     if (!loaded) {
-      dispatch(fetchImages());
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      dispatch(fetchImages(userData!.uid));
     }
-    setFilter(email);
-  }, [dispatch]);
-
-  const filteredImages = images?.filter((item) => filter === item.email) || [];
+  }, [dispatch, fetchImages]);
 
   return (
     <div className={cl.imageListContainer}>
@@ -35,12 +28,12 @@ export const ImageList = ({ email }: ImageListProps) => {
         <Loader />
       ) : (
         <>
-          {filteredImages.length === 0 ? (
+          {images.length === 0 ? (
             <p style={{ fontSize: '1.5rem' }}>
               No projects available! Create your first one :)
             </p>
           ) : (
-            filteredImages.map((item) => (
+            images.map((item) => (
               <ImageItem
                 key={item.id}
                 imageID={item.imagesrc}

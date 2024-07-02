@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import cl from './ImageItem.module.scss';
 import { Card, Modal, Button, Flex, Tooltip } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { useAppDispatch } from '../../store/hooks/useReduxHooks.ts';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../store/hooks/useReduxHooks.ts';
 import { deleteImage } from '../../store/slice/imageSlice.ts';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,6 +19,7 @@ export const ImageItem = ({ author, imageID, id }: ImageItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { userData } = useAppSelector((state) => state.user);
 
   const showModal = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
@@ -29,7 +33,7 @@ export const ImageItem = ({ author, imageID, id }: ImageItemProps) => {
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();
-    dispatch(deleteImage(id));
+    dispatch(deleteImage({ userUid: userData!.uid, id }));
   };
 
   const openCanvasWithImage = (

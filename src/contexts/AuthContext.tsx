@@ -1,5 +1,5 @@
 import React, { useState, createContext, useEffect, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -12,6 +12,7 @@ import { useAppDispatch } from '../store/hooks/useReduxHooks.ts';
 import { setUnAuth, setUser } from '../store/slice/userSlice.ts';
 import toast, { Toaster } from 'react-hot-toast';
 import { useUser } from '../store/hooks/useUser.ts';
+import { clearImages } from '../store/slice/imageSlice.ts';
 
 interface IAuthContext {
   signIn: (auth: Auth, email: string, password: string) => void;
@@ -40,13 +41,14 @@ export const AuthContextProvider = ({
 }: IAuthContextProviderProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isAuth, isLoading} = useUser();
+  const { pathname } = useLocation();
+  const { isAuth, isLoading } = useUser();
   const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
     if (!isLoading) {
       setInitializing(false);
-      if (!isAuth) {
+      if (!isAuth && pathname !== '/signup') {
         navigate('/signin');
       }
     }
@@ -100,6 +102,7 @@ export const AuthContextProvider = ({
   const logOut = () => {
     signOut(auth);
     dispatch(setUnAuth());
+    dispatch(clearImages())
     navigate('/signin');
   };
 

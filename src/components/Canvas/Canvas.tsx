@@ -8,13 +8,13 @@ import {
   toolIsDrawing,
 } from '../../store/slice/toolSlice.ts';
 import { useAppSelector } from '../../store/hooks/useReduxHooks.ts';
-import { ref, set } from 'firebase/database';
+import { child, get, ref, set } from 'firebase/database';
 import { db } from '../../apiFirebase/firebase.ts';
 import { v4 as uuidv4 } from 'uuid';
 import { ClearOutlined, SaveOutlined } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import toast from 'react-hot-toast';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { resetLoaded } from '../../store/slice/imageSlice.ts';
 
 interface ISnapshot {
@@ -26,10 +26,11 @@ interface ISnapshot {
 }
 
 const Canvas = () => {
-  const location = useLocation();
+  const { id: existingId } = useParams<{ id: string }>();
+  const [imageExists, setImageExists] = useState<boolean>(true);
+  // const location = useLocation();
   const navigate = useNavigate();
-  const { imageID, id: existingId } = location.state || {};
-  const [image, setImage] = useState<string>(imageID || '');
+  const [image, setImage] = useState<string>('');
   const [isCanvasModified, setIsCanvasModified] = useState<boolean>(false);
   const dispatch = useTypedDispatch();
   const { tool, color, lineThickness, isDrawing, fillColor, prevPosition } =
@@ -42,6 +43,38 @@ const Canvas = () => {
     height: CANVAS_SIZE.height,
     width: CANVAS_SIZE.width,
   });
+  const { userData } = useAppSelector((state) => state.user);
+
+  const checkIfImageExists = async (imageID: string) => {
+    try {
+      const dbRef = ref(db);
+      const snapshot = await get(
+        child(dbRef, `users/${userData!.uid}/images/${imageID}`),
+      );
+      if (snapshot.exists()) {
+        const imageData = snapshot.val();
+        setImage(imageData.imagesrc);
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('Error checking image existence:', error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    if (existingId) {
+      checkIfImageExists(existingId).then((exists) => {
+        if (!exists) {
+          setImageExists(false);
+          toast.error('Image does not exist!');
+          navigate('/home');
+        }
+      });
+    }
+  }, [existingId]);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -51,15 +84,15 @@ const Canvas = () => {
       });
       contextRef.current = context;
 
-      if (imageID) {
+      if (image) {
         const img = new Image();
-        img.src = imageID;
+        img.src = image;
         img.onload = () => {
           context?.drawImage(img, 0, 0, canvas.width, canvas.height);
         };
       }
     }
-  }, [imageID]);
+  }, [image]);
 
   const clear = () => {
     const ctx = contextRef.current;
@@ -93,8 +126,6 @@ const Canvas = () => {
     dispatch(toolIsDrawing(false));
     saveImg();
   };
-
-  const { userData } = useAppSelector((state) => state.user);
 
   const saveImg = () => {
     const canvas = canvasRef.current;
@@ -131,7 +162,7 @@ const Canvas = () => {
     }
     const id = existingId || uuidv4();
     try {
-      set(ref(db, `images/${id}/`), {
+      set(ref(db, `users/${userData!.uid}/images/${id}/`), {
         email: userData!.email,
         imagesrc: image,
         id: id,
@@ -144,6 +175,10 @@ const Canvas = () => {
       toast.error('Something went wrong!');
     }
   };
+
+  if (!imageExists) {
+    return <div>Image not found. Redirecting...</div>;
+  }
 
   return (
     <div className={cl.canvasContainer}>

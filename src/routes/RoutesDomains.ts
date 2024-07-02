@@ -5,5 +5,6 @@ export enum RoutesDomains {
   HOME = '/home',
   PAINT = '/paint',
   PAINTID = '/paint/:id',
+  ERROR = '/error',
   NOT_FOUND = '*',
 }

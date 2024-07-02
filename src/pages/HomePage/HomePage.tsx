@@ -9,7 +9,7 @@ export const HomePage = () => {
   return (
     <>
       <Header email={userData!.email} />
-      <ImageList email={userData!.email} />
+      <ImageList />
     </>
   );
 };
