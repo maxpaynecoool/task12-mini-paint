@@ -16,7 +16,6 @@ export const ImageList = () => {
 
   useEffect(() => {
     if (!loaded) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       dispatch(fetchImages(userData!.uid));
     }
@@ -39,6 +38,7 @@ export const ImageList = () => {
                 imageID={item.imagesrc}
                 author={item.email}
                 id={item.id}
+                projectName={item.projectName}
               />
             ))
           )}

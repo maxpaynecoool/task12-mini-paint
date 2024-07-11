@@ -13,8 +13,10 @@
 
 .topButtons {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   padding-top: 10px;
+  gap: 2vh;
 }
 
 .toolButton {

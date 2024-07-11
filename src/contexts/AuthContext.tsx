@@ -25,10 +25,8 @@ interface IAuthContextProviderProps {
 }
 
 const authContextDefaults: IAuthContext = {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   signIn: (auth: Auth, email: string, password: string) => null,
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   //@ts-ignore
   signUp: (auth: Auth, email: string, password: string) => null,
   logOut: () => null,

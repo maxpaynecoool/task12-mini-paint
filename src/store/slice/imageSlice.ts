@@ -6,6 +6,7 @@ interface ImageInfo {
   email: string;
   id: string;
   imagesrc: string;
+  projectName: string;
 }
 
 interface ImagesState {
@@ -46,6 +47,13 @@ const imagesSlice = createSlice({
     resetLoaded: (state) => {
       state.loaded = false;
     },
+    updateImageName: (state, action: PayloadAction<{ id: string; projectName: string }>) => {
+      const { id, projectName } = action.payload;
+      const image = state.images.find((img) => img.id === id);
+      if (image) {
+        image.projectName = projectName;
+      }
+    },
     clearImages(state) {
       state.images = [];
       state.loading = false;
@@ -81,6 +89,6 @@ const imagesSlice = createSlice({
   },
 });
 
-export const { resetLoaded, clearImages } = imagesSlice.actions;
+export const { resetLoaded, clearImages, updateImageName } = imagesSlice.actions;
 
 export default imagesSlice.reducer;

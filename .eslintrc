@@ -28,7 +28,8 @@
     "object-curly-newline": ["warn", { "multiline": true, "minProperties": 3 }],
     "object-property-newline": ["warn", { "allowMultiplePropertiesPerLine": true }],
     "react/display-name": "off",
-    "no-constant-condition": "off"
+    "no-constant-condition": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   },
   "parserOptions": {
     "ecmaVersion": "latest",
