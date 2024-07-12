@@ -18,6 +18,7 @@ import {
 import { TOOLS, lineThicknessSelect } from '../Canvas/constants.ts';
 import cl from './ToolBar.module.scss';
 import { Button, Tooltip } from 'antd';
+import { useTheme } from '../../contexts/ThemeContext.tsx';
 
 export const ToolBar = memo(() => {
   const dispatch = useTypedDispatch();
@@ -35,6 +36,8 @@ export const ToolBar = memo(() => {
 
   const setLineThickness = (e: SelectChangeEvent<number>) =>
     dispatch(changeLineThickness(+e.target.value));
+
+  const { theme } = useTheme();
 
   return (
     <div className={cl.toolBarContainer}>
@@ -57,9 +60,9 @@ export const ToolBar = memo(() => {
           );
         })}
       </div>
-      <div className={cl.toolButtonsControlContainer}>
+      <div className={theme === 'light' ? cl.toolButtonsControlContainer : cl.toolButtonsControlContainerDark}>
         <Box>Fill:</Box>
-        <Checkbox checked={fillColor} onChange={setFillColor} />
+        <Checkbox checked={fillColor} onChange={setFillColor} style={{color: theme === 'light'? undefined : 'white'}}/>
         <Box>Color:</Box>
         <Tooltip placement='top' title='Choose a color'>
           <input
@@ -72,7 +75,7 @@ export const ToolBar = memo(() => {
         <Box>Line thickness:</Box>
         <Box sx={{ minWidth: 100 }}>
           <FormControl fullWidth size='small'>
-            <Select value={lineThickness || ''} onChange={setLineThickness}>
+            <Select value={lineThickness || ''} onChange={setLineThickness} style={{backgroundColor: 'white'}}>
               {lineThicknessSelect.map((thick) => {
                 return (
                   <MenuItem key={thick} value={thick}>

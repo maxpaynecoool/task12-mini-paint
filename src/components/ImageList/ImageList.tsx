@@ -7,6 +7,7 @@ import {
 } from '../../store/hooks/useReduxHooks.ts';
 import { fetchImages } from '../../store/slice/imageSlice.ts';
 import { Loader } from '../Loader/Loader.tsx';
+import { useTheme } from '../../contexts/ThemeContext.tsx';
 
 export const ImageList = () => {
   const { images, loading, loaded } = useAppSelector((state) => state.images);
@@ -21,12 +22,14 @@ export const ImageList = () => {
     }
   }, [dispatch, fetchImages]);
 
+  const { theme } = useTheme();
+
   return (
-    <div className={cl.imageListContainer}>
+    <main className={theme === 'light' ? cl.main : cl.mainDark}>
       {loading ? (
         <Loader />
       ) : (
-        <>
+        <div className={cl.imageListContainer}>
           {images.length === 0 ? (
             <p style={{ fontSize: '1.5rem' }}>
               No projects available! Create your first one :)
@@ -42,8 +45,8 @@ export const ImageList = () => {
               />
             ))
           )}
-        </>
+        </div>
       )}
-    </div>
+    </main>
   );
 };

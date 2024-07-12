@@ -6,22 +6,20 @@ import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
 import { AuthContextProvider } from './contexts/AuthContext.tsx';
 import { BrowserRouter } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from './contexts/ThemeContext.tsx';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
-const queryClient = new QueryClient();
-
 root.render(
   <BrowserRouter>
-    {/*<QueryClientProvider client={queryClient}>*/}
     <Provider store={store}>
       <AuthContextProvider>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </AuthContextProvider>
     </Provider>
-    {/*</QueryClientProvider>*/}
   </BrowserRouter>,
 );

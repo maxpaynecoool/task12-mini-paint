@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { ref, update } from 'firebase/database';
 import { db } from '../../apiFirebase/firebase.ts';
 import toast from 'react-hot-toast';
+import { useTheme } from '../../contexts/ThemeContext.tsx';
 
 interface ImageItemProps {
   author: string;
@@ -83,6 +84,8 @@ export const ImageItem = ({
   };
 
   const { Meta } = Card;
+
+  const { theme } = useTheme();
 
   return (
     <div className={cl.imageItem}>

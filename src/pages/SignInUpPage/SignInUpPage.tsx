@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext.tsx';
 import { auth } from '../../apiFirebase/firebase.ts';
 import cl from './SignInUpPage.module.scss';
+import { useTheme } from '../../contexts/ThemeContext.tsx';
 
 export const SignInUpPage = () => {
   const [email, setEmail] = useState<string>('');

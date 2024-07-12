@@ -4,7 +4,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2vw
+  padding: 0 2vw;
+}
+
+.headerContainerDark {
+  background: rgb(39, 38, 38);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2vw;
+  color: white;
 }
 
 .home {
@@ -29,6 +39,16 @@
   -webkit-text-fill-color: transparent;
   animation: textflow 3s linear infinite;
 }
+
+.userDark {
+  background: linear-gradient(90deg, #e8a3f4, #f8e3a6, #f7a9a9, #a5aff2, #e933ff);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textflow 3s linear infinite;
+}
+
 @keyframes textflow {
   from {background-position: 0% center}
   to {background-position: 200% center}
