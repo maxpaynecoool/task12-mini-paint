@@ -209,6 +209,7 @@ const Canvas = () => {
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(img, 0, 0, canvas.width, canvas.height);
             setIsCanvasModified(true);
+            saveImg();
           }
         };
         img.src = e.target?.result as string;
