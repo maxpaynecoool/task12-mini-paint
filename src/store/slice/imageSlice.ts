@@ -34,6 +34,7 @@ export const fetchImages = createAsyncThunk(
 
 export const deleteImage = createAsyncThunk(
   'images/deleteImage',
+
   async ({ userUid, id }: { userUid: string | null; id: string }) => {
     await remove(ref(db, `users/${userUid}/images/${id}`));
     return id;
