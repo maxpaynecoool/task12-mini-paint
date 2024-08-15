@@ -4,7 +4,7 @@ import { HomePage } from './pages/HomePage/HomePage.tsx';
 import { PaintPage } from './pages/PaintPage/PaintPage.tsx';
 import React from 'react';
 import ErrorPage from './pages/ErrorPage/ErrorPage.tsx';
-import { useTheme } from './contexts/ThemeContext.tsx';
+import { useTheme2 } from './contexts/ThemeContext.tsx';
 import './index.css';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
     NOT_FOUND2 = '*2',
   }
 
-  const { theme } = useTheme();
+  const { theme } = useTheme2();
 
   return (
     <div className={theme === 'dark' ? 'rootDark' : 'root'}>
@@ -45,7 +45,6 @@ function App() {
         />
       </Routes>
     </div>
-
   );
 }
 
