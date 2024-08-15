@@ -17,6 +17,14 @@ function App() {
     PAINTID = '/paint/:id',
     ERROR = '/error',
     NOT_FOUND = '*',
+    SIGN_IN_MAIN2 = '/2',
+    SIGN_IN2 = '/signin2',
+    SIGN_UP2 = '/signup2',
+    HOME2 = '/home2',
+    PAINT2 = '/paint2',
+    PAINTID2 = '/paint2/:id',
+    ERROR2 = '/error2',
+    NOT_FOUND2 = '*2',
   }
 
   const { theme } = useTheme();
